@@ -51,11 +51,11 @@ const commands = [
 const gameOptions = {
   pubg: {
     mode: [{ name: 'Tất cả', value: 'all'}, { name: 'TPP', value: 'tpp'}, { name: 'FPP', value: 'fpp'}],
-    mode: [{ name: 'Tất cả', value: 'all'}, { name: 'Unrank', value: 'unrank'}, { name: 'Bronze', value: 'bronze'}],
+    rank: [{ name: 'Tất cả', value: 'all'}, { name: 'Unrank', value: 'unrank'}, { name: 'Bronze', value: 'bronze'}],
   },
   valorant: {
     mode: [{ name: 'Tất cả', value: 'all'}, { name: 'Unrate', value: 'unrate'}, { name: 'Competitive', value: 'competitive'}],
-    mode: [{ name: 'Tất cả', value: 'all'}, { name: 'Unrank', value: 'unrank'}, { name: 'Iron', value: 'iron'}, { name: 'Bronze', value: 'bronze'}],
+    rank: [{ name: 'Tất cả', value: 'all'}, { name: 'Unrank', value: 'unrank'}, { name: 'Iron', value: 'iron'}, { name: 'Bronze', value: 'bronze'}],
   },
 };
 
