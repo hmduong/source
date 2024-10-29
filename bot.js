@@ -96,9 +96,9 @@ client.on('interactionCreate', async interaction => {
                 // Get the roles
                 const roles = member.roles.cache.map(role => role.name);
                 if (roles?.includes(state.inviteRole)) {
-                    await interaction.reply(`Lobby ${state.invite.role}`);
+                    await interaction.reply(`Lobby ${state.inviteRole}`);
                 } else {
-                    await interaction.reply(`Bạn cần phải có vai trò là người chơi ${state.invite.role}. Liên hệ MOD để được hỗ trợ.`);
+                    await interaction.reply(`Bạn cần phải có vai trò là người chơi ${state.inviteRole}. Liên hệ MOD để được hỗ trợ.`);
                 }
                 state.resetInviteRole();
             }
