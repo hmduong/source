@@ -109,7 +109,7 @@ client.on("interactionCreate", async (interaction) => {
         await interaction.respond(choices);
       } else if (interaction.isCommand()) {
         let member = interaction.member; 
-        let memberRoles = member.roles.cache.map(role => role.name);
+        let memberRoles = member.roles.cache.map(role => role.name.toLowerCase());
         let channel = member?.voice?.channel
         let category = channel?.parent
         let game = interaction.options.getString('game') || category?.name.toLowerCase() || ''
