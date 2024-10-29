@@ -52,7 +52,9 @@ const gameOptions = {
     mode: [],
     rank: [],
   },
-}(async () => {
+}
+  
+(async () => {
   try {
     console.log(
       `Started refreshing application (/) commands for guild ${process.env.GUILD_ID}.`
