@@ -115,6 +115,15 @@ client.on("interactionCreate", async (interaction) => {
         let game = interaction.options.getString('game') || category?.name.toLowerCase() || ''
         let mode = interaction.options.getString('mode') || 'all'
         let rank = interaction.options.getString('rank') || 'all'
+        console.log("z3no3k log: isCommand --------------------------------------");
+        console.log("z3no3k member: ", member);
+        console.log("z3no3k memberRoles: ", memberRoles);
+        console.log("z3no3k channel: ", channel);
+        console.log("z3no3k category: ", category);
+        console.log("z3no3k game: ", game);
+        console.log("z3no3k mode: ", mode);
+        console.log("z3no3k rank: ", rank);
+        console.log("z3no3k log: isCommand --------------------------------------");
         let result = {
             success: true,
             error: ''
