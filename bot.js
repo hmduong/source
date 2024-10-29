@@ -10,45 +10,45 @@ const client = new Client({
 const dotenv = require('dotenv');
 dotenv.config();
 
-const state = (() => {
-    const _state = {
-        invite: {
-            role: ''
-        }
-    };
-
-    return {
-        get inviteRole() {
-            return _state.invite.role;
-        },
-        set inviteRole(value) {
-            _state.invite.role = value;
-        },
-        resetInviteRole() {
-            _state.invite.role = '';
-        }
-    };
-})();
-
 const rest = new REST({ version: '10' }).setToken(process.env.DISCORD_TOKEN);
 
 const commands = [
     new SlashCommandBuilder()
         .setName('invite')
-        .setDescription('Shows a selection menu')
+        .setDescription('Tìm người chơi')
         .addStringOption(option =>
             option
-                .setName('pubg')
-                .setAutocomplete(true) // Enable autocomplete for category
-                .setDescription('.')
+                .setName('game')
+                .setDescription('Game')
+                .addOptions(
+                    { label: 'PUBG', value: 'pubg' },
+                    { label: 'VALORANT', value: 'valorant' },
+            );
         )
         .addStringOption(option =>
             option
-                .setName('valorant')
-                .setAutocomplete(true) // Enable autocomplete for item
-                .setDescription('.')
+                .setName('mode')
+                .setDescription('Game mode')
+                .setAutocomplete(true)
+        )
+        .addStringOption(option =>
+            option
+                .setName('rank')
+                .setDescription("Player's rank")
+                .setAutocomplete(true)
         )
 ].map(command => command.toJSON());
+
+const gameOptions = {
+    pubg: {
+        mode: [],
+        rank: []
+    },
+    valorant: {
+        mode: [],
+        rank: []
+    }
+}
 
 (async () => {
     try {
@@ -74,33 +74,31 @@ client.on('interactionCreate', async interaction => {
     switch (commandName) {
         case 'invite':
             if (interaction.isAutocomplete()) {
-                const focusedOption = interaction.options.getFocused();
-                const role = interaction.options._hoistedOptions.pop().name
-                let choices = [];
-
-                if (role === 'pubg') {
-                    state.inviteRole = role
-                    choices = ['Chicken Dinner', 'Battle Royale', 'Sniper Mode'];
-                } else if (role === 'valorant') {
-                    state.inviteRole = role
-                    choices = ['Spike Rush', 'Deathmatch', 'Unrated'];
-                }
+                const game = interaction.options.getString('game');
+                const selectedInfo = interaction.options._hoistedOptions
+                const focusing = [...selectedInfo].pop().name
+                const options = gameOptions[game]
+                let choices = options[focusing]
+                console.log('z3no3k game: ', game)
+                console.log('z3no3k selectedInfo: ', selectedInfo)
+                console.log('z3no3k focusing: ', focusing)
+                console.log('z3no3k options: ', options)
+                console.log('z3no3k choices: ', choices)
                 let filtered = choices.filter(choice => choice.toLowerCase().includes(focusedOption.toLowerCase()));
-
                 await interaction.respond(
                     filtered.map(choice => ({ name: choice, value: choice })),
                 );
             } else if (interaction.isCommand()) {
+                console.log('z3no3k interaction.options: ', interaction.options)
                 const member = interaction.member; // This gives the guild member who executed the command
 
                 // Get the roles
-                const roles = member.roles.cache.map(role => role.name);
-                if (roles?.includes(state.inviteRole)) {
-                    await interaction.reply(`Lobby ${state.inviteRole}`);
-                } else {
-                    await interaction.reply(`Bạn cần phải có vai trò là người chơi ${state.inviteRole}. Liên hệ MOD để được hỗ trợ.`);
-                }
-                state.resetInviteRole();
+                // const roles = member.roles.cache.map(role => role.name);
+                // if (roles?.includes(state.inviteRole)) {
+                //     await interaction.reply(`Lobby ${state.inviteRole}`);
+                // } else {
+                //     await interaction.reply(`Bạn cần phải có vai trò là người chơi ${state.inviteRole}. Liên hệ MOD để được hỗ trợ.`);
+                // }
             }
             break;
 
