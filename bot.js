@@ -52,7 +52,7 @@ const gameOptions = {
     mode: ['Unrate', 'Competitive'],
     rank: ['Iron', 'Bronze', 'Silver'],
   },
-}
+};
 
 (async () => {
   try {
