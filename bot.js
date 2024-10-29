@@ -10,11 +10,25 @@ const client = new Client({
 const dotenv = require('dotenv');
 dotenv.config();
 
-const state = {
-    invite: {
-        role: ''
-    }
-}
+const state = (() => {
+    const _state = {
+        invite: {
+            role: ''
+        }
+    };
+
+    return {
+        get inviteRole() {
+            return _state.invite.role;
+        },
+        set inviteRole(value) {
+            _state.invite.role = value;
+        },
+        resetInviteRole() {
+            _state.invite.role = '';
+        }
+    };
+})();
 
 const rest = new REST({ version: '10' }).setToken(process.env.DISCORD_TOKEN);
 
@@ -65,10 +79,10 @@ client.on('interactionCreate', async interaction => {
                 let choices = [];
 
                 if (role === 'pubg') {
-                    state.invite.role = role
+                    state.inviteRole = role
                     choices = ['Chicken Dinner', 'Battle Royale', 'Sniper Mode'];
                 } else if (role === 'valorant') {
-                    state.invite.role = role
+                    state.inviteRole = role
                     choices = ['Spike Rush', 'Deathmatch', 'Unrated'];
                 }
                 let filtered = choices.filter(choice => choice.toLowerCase().includes(focusedOption.toLowerCase()));
@@ -81,12 +95,12 @@ client.on('interactionCreate', async interaction => {
 
                 // Get the roles
                 const roles = member.roles.cache.map(role => role.name);
-                if (roles?.includes(state.invite.role)) {
+                if (roles?.includes(state.inviteRole)) {
                     await interaction.reply(`Lobby ${state.invite.role}`);
                 } else {
                     await interaction.reply(`Bạn cần phải có vai trò là người chơi ${state.invite.role}. Liên hệ MOD để được hỗ trợ.`);
                 }
-                state.invite.role = ''
+                state.resetInviteRole();
             }
             break;
 
