@@ -100,11 +100,12 @@ client.on("interactionCreate", async (interaction) => {
         } else {
             choices = [{ name: 'Tất cả',  value: 'all' }]
         }
+        console.log("z3no3k log: isAutocomplete --------------------------------------");
         console.log("z3no3k game: ", game);
         console.log("z3no3k selectedInfo: ", selectedInfo);
         console.log("z3no3k focusing: ", focusing);
         console.log("z3no3k choices: ", choices);
-
+        console.log("z3no3k log: isAutocomplete --------------------------------------");
         await interaction.respond(choices);
       } else if (interaction.isCommand()) {
         let member = interaction.member; 
@@ -121,24 +122,18 @@ client.on("interactionCreate", async (interaction) => {
         if (!game) {
             result.error = `Bạn chưa chọn game.`
             result.success = false
-            return
-        }
-        if (!Object.keys(gameOptions).includes(game)) {
+        } else if (!Object.keys(gameOptions).includes(game)) {
             result.error = `Game không hợp lệ! Vui lòng chọn game trong danh sách tùy chọn.`
             result.success = false
-            return
-        }
-        if (!memberRoles?.includes(game)) {
+        } else if (!memberRoles?.includes(game)) {
             result.error = `Bạn chưa đăng kí vai trò người chơi game ${game.toUpperCase()}. Vui lòng làm theo hướng dẫn máy chủ để được cấp vai trò.`
             result.success = false
-            return
-        }
-        if (category?.name.toLowerCase() !== game && channel) {
+        }else if (category?.name.toLowerCase() !== game && channel) {
             result.error = `Hãy tham gia kênh thoại cho game ${game.toUpperCase()} trước.`
             result.success = false
-            return
-        }
+        } 
         if (result.success) {    
+            console.log("z3no3k log: isCommand success");
             const embed = new EmbedBuilder()
             .setColor('#199980')
             .setTitle('Player Invitation')
@@ -157,6 +152,7 @@ client.on("interactionCreate", async (interaction) => {
             const row = new ActionRowBuilder().addComponents(button);
             await interaction.reply({ embeds: [embed], components: [row] });
         } else {
+            console.log("z3no3k log: isCommand error: ", result.error);
             await interaction.reply(result.error);
         }
       }
