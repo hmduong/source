@@ -27,9 +27,9 @@ const commands = [
       option
         .setName("game")
         .setDescription("Game")
-        .addChoices(
-          { label: "PUBG", value: "pubg" },
-          { label: "VALORANT", value: "valorant" }
+        .addChoices( 
+          { name: "PUBG", value: "pubg" },
+          { name: "VALORANT", value: "valorant" }
         )
     )
     .addStringOption((option) =>
