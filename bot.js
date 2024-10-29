@@ -5,6 +5,10 @@ const {
   REST,
   Routes,
   SlashCommandBuilder,
+  EmbedBuilder,
+  ActionRowBuilder,
+  ButtonBuilder,
+  ButtonStyle
 } = require("discord.js");
 const client = new Client({
   intents: [
@@ -27,6 +31,7 @@ const commands = [
       option
         .setName("game")
         .setDescription("Game")
+        .setRequired(true)
         .addChoices( 
           { name: "PUBG", value: "pubg" }, 
           { name: "VALORANT", value: "valorant" }
@@ -45,12 +50,12 @@ const commands = [
 
 const gameOptions = {
   pubg: {
-    mode: ['TPP', 'FPP'],
-    rank: ['Unrank', 'Silver'],
+    mode: [{ name: 'Tất cả', value: 'all'}, { name: 'TPP', value: 'tpp'}, { name: 'FPP', value: 'fpp'}],
+    mode: [{ name: 'Tất cả', value: 'all'}, { name: 'Unrank', value: 'unrank'}, { name: 'Bronze', value: 'bronze'}],
   },
   valorant: {
-    mode: ['Unrate', 'Competitive'],
-    rank: ['Iron', 'Bronze', 'Silver'],
+    mode: [{ name: 'Tất cả', value: 'all'}, { name: 'Unrate', value: 'unrate'}, { name: 'Competitive', value: 'competitive'}],
+    mode: [{ name: 'Tất cả', value: 'all'}, { name: 'Unrank', value: 'unrank'}, { name: 'Iron', value: 'iron'}, { name: 'Bronze', value: 'bronze'}],
   },
 };
 
@@ -91,9 +96,9 @@ client.on("interactionCreate", async (interaction) => {
         const focusing = [...selectedInfo].pop().name;
         let choices = []
         if (game) {
-            choices = gameOptions[game][focusing].map((choice) => ({ name: choice, value: choice }));
+            choices = gameOptions[game][focusing].map((choice) => ({ name: choice.name, value: choice.value }));
         } else {
-            choices = [{ name: 'Chọn game trước', value: 'no_options' }]
+            choices = [{ name: 'Tất cả',  value: 'all' }]
         }
         console.log("z3no3k game: ", game);
         console.log("z3no3k selectedInfo: ", selectedInfo);
@@ -102,14 +107,53 @@ client.on("interactionCreate", async (interaction) => {
 
         await interaction.respond(choices);
       } else if (interaction.isCommand()) {
-        console.log("z3no3k interaction.options: ", interaction.options);
-        // const member = interaction.member; 
-        // const roles = member.roles.cache.map(role => role.name);
-        // if (roles?.includes(state.inviteRole)) {
-        //     await interaction.reply(`Lobby ${state.inviteRole}`);
-        // } else {
-        //     await interaction.reply(`Bạn cần phải có vai trò là người chơi ${state.inviteRole}. Liên hệ MOD để được hỗ trợ.`);
-        // }
+        let member = interaction.member; 
+        let memberRoles = member.roles.cache.map(role => role.name);
+        let channel = member?.voice?.channel
+        let category = channel?.parent
+        let game = interaction.options.getString('game') || category?.name.toLowerCase() || ''
+        let mode = interaction.options.getString('mode') || 'all'
+        let rank = interaction.options.getString('rank') || 'all'
+        let result = {
+            success: false,
+            error: ''
+        }
+        if (!game) {
+            error = `Bạn chưa chọn game.`
+            return
+        }
+        if (!Object.keys(gameOptions).includes(game)) {
+            error = `Game không hợp lệ! Vui lòng chọn game trong danh sách tùy chọn.`
+            return
+        }
+        if (!memberRoles?.includes(game)) {
+            error = `Bạn chưa đăng kí vai trò người chơi game ${game.toUpperCase()}. Vui lòng làm theo hướng dẫn máy chủ để được cấp vai trò.`
+            return
+        }
+        if (category?.name.toLowerCase() !== game && channel) {
+            error = `Hãy tham gia kênh thoại cho game ${game.toUpperCase()} trước.`
+            return
+        }
+        if (result.success) {    
+            const embed = new EmbedBuilder()
+            .setColor('#199980')
+            .setTitle('Player Invitation')
+            .setDescription('You have initiated a player invitation.')
+            .addFields(
+              { name: 'Game Selected', value: game, inline: true },
+              { name: 'Status', value: 'Waiting for players to join...', inline: true }
+            )
+            .setTimestamp() 
+            .setFooter({ text: 'Use /invite again to adjust your options!' }); 
+            const button = new ButtonBuilder()
+                .setLabel(`Join Voice Channel ${channel.name}`)
+                .setStyle(ButtonStyle.Link)
+                .setURL(`https://discord.com/channels/${interaction.guild.id}/${channel.id}`);
+            const row = new ActionRowBuilder().addComponents(button);
+            await interaction.reply({ embeds: [embed], components: [row] });
+        } else {
+            await interaction.reply(result.error);
+        }
       }
       break;
 
