@@ -28,7 +28,7 @@ const commands = [
         .setName("game")
         .setDescription("Game")
         .addChoices( 
-          { name: "PUBG", value: "pubg" },
+          { name: "PUBG", value: "pubg" }, 
           { name: "VALORANT", value: "valorant" }
         )
     )
@@ -45,15 +45,15 @@ const commands = [
 
 const gameOptions = {
   pubg: {
-    mode: [],
-    rank: [],
+    mode: ['TPP', 'FPP'],
+    rank: ['Unrank', 'Silver'],
   },
   valorant: {
-    mode: [],
-    rank: [],
+    mode: ['Unrate', 'Competitive'],
+    rank: ['Iron', 'Bronze', 'Silver'],
   },
-};
-  
+}
+
 (async () => {
   try {
     console.log(
@@ -89,19 +89,18 @@ client.on("interactionCreate", async (interaction) => {
         const game = interaction.options.getString("game");
         const selectedInfo = interaction.options._hoistedOptions;
         const focusing = [...selectedInfo].pop().name;
-        const options = gameOptions[game];
-        let choices = options[focusing];
+        let choices = []
+        if (game) {
+            choices = gameOptions[game][focusing].map((choice) => ({ name: choice, value: choice }));
+        } else {
+            choices = [{ name: 'Chọn game trước', value: 'no_options' }]
+        }
         console.log("z3no3k game: ", game);
         console.log("z3no3k selectedInfo: ", selectedInfo);
         console.log("z3no3k focusing: ", focusing);
-        console.log("z3no3k options: ", options);
         console.log("z3no3k choices: ", choices);
-        let filtered = choices.filter((choice) =>
-          choice.toLowerCase().includes(focusedOption.toLowerCase())
-        );
-        await interaction.respond(
-          filtered.map((choice) => ({ name: choice, value: choice }))
-        );
+
+        await interaction.respond(choices);
       } else if (interaction.isCommand()) {
         console.log("z3no3k interaction.options: ", interaction.options);
         // const member = interaction.member; 
