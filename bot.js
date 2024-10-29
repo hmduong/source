@@ -52,7 +52,7 @@ const gameOptions = {
     mode: [],
     rank: [],
   },
-}
+};
   
 (async () => {
   try {
