@@ -23,7 +23,7 @@ const commands = [
                 .addOptions(
                     { label: 'PUBG', value: 'pubg' },
                     { label: 'VALORANT', value: 'valorant' },
-            );
+                )
         )
         .addStringOption(option =>
             option
