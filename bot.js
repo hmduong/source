@@ -137,7 +137,7 @@ client.on("interactionCreate", async (interaction) => {
         } else if (!memberRoles?.includes(game)) {
             result.error = `Bạn chưa đăng kí vai trò người chơi game ${game.toUpperCase()}. Vui lòng làm theo hướng dẫn máy chủ để được cấp vai trò.`
             result.success = false
-        }else if (category?.name.toLowerCase() !== game && channel) {
+        }else if (category?.name.toLowerCase() !== game && !channel) {
             result.error = `Hãy tham gia kênh thoại cho game ${game.toUpperCase()} trước.`
             result.success = false
         } 
