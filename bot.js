@@ -12,7 +12,7 @@ dotenv.config();
 
 const state = {
     invite: {
-        type: ''
+        role: ''
     }
 }
 
@@ -61,12 +61,14 @@ client.on('interactionCreate', async interaction => {
         case 'invite':
             if (interaction.isAutocomplete()) {
                 const focusedOption = interaction.options.getFocused();
-                const type = interaction.options._hoistedOptions.pop().name
+                const role = interaction.options._hoistedOptions.pop().name
                 let choices = [];
 
-                if (type === 'pubg') {
+                if (role === 'pubg') {
+                    state.invite.role = role
                     choices = ['Chicken Dinner', 'Battle Royale', 'Sniper Mode'];
-                } else if (type === 'valorant') {
+                } else if (role === 'valorant') {
+                    state.invite.role = role
                     choices = ['Spike Rush', 'Deathmatch', 'Unrated'];
                 }
                 let filtered = choices.filter(choice => choice.toLowerCase().includes(focusedOption.toLowerCase()));
@@ -78,11 +80,13 @@ client.on('interactionCreate', async interaction => {
                 const member = interaction.member; // This gives the guild member who executed the command
 
                 // Get the roles
-                const roles = member.roles.cache.map(role => role.name).join(', ') || 'No roles';
-                console.log(`🚀  file: bot.js:94  client.on  roles:`, roles)
-
-                // Respond with the roles
-                await interaction.reply(`Your roles: ${roles}`);
+                const roles = member.roles.cache.map(role => role.name);
+                if (roles?.includes(state.invite.role)) {
+                    await interaction.reply(`Lobby ${state.invite.role}`);
+                } else {
+                    await interaction.reply(`Bạn cần phải có vai trò là người chơi ${state.invite.role}. Liên hệ MOD để được hỗ trợ.`);
+                }
+                state.invite.role = ''
             }
             break;
 
