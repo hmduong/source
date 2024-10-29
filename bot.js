@@ -115,23 +115,27 @@ client.on("interactionCreate", async (interaction) => {
         let mode = interaction.options.getString('mode') || 'all'
         let rank = interaction.options.getString('rank') || 'all'
         let result = {
-            success: false,
+            success: true,
             error: ''
         }
         if (!game) {
-            error = `Bạn chưa chọn game.`
+            result.error = `Bạn chưa chọn game.`
+            result.success = false
             return
         }
         if (!Object.keys(gameOptions).includes(game)) {
-            error = `Game không hợp lệ! Vui lòng chọn game trong danh sách tùy chọn.`
+            result.error = `Game không hợp lệ! Vui lòng chọn game trong danh sách tùy chọn.`
+            result.success = false
             return
         }
         if (!memberRoles?.includes(game)) {
-            error = `Bạn chưa đăng kí vai trò người chơi game ${game.toUpperCase()}. Vui lòng làm theo hướng dẫn máy chủ để được cấp vai trò.`
+            result.error = `Bạn chưa đăng kí vai trò người chơi game ${game.toUpperCase()}. Vui lòng làm theo hướng dẫn máy chủ để được cấp vai trò.`
+            result.success = false
             return
         }
         if (category?.name.toLowerCase() !== game && channel) {
-            error = `Hãy tham gia kênh thoại cho game ${game.toUpperCase()} trước.`
+            result.error = `Hãy tham gia kênh thoại cho game ${game.toUpperCase()} trước.`
+            result.success = false
             return
         }
         if (result.success) {    
@@ -141,7 +145,8 @@ client.on("interactionCreate", async (interaction) => {
             .setDescription('You have initiated a player invitation.')
             .addFields(
               { name: 'Game Selected', value: game, inline: true },
-              { name: 'Status', value: 'Waiting for players to join...', inline: true }
+              { name: 'Mode', value: mode, inline: true },
+              { name: 'Rank', value: rank, inline: true }
             )
             .setTimestamp() 
             .setFooter({ text: 'Use /invite again to adjust your options!' }); 
