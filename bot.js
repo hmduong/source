@@ -79,6 +79,15 @@ client.once(Events.ClientReady, (readyClient) => {
   console.log(`Ready! Logged in as ${readyClient.user.tag}`);
 });
 
+const getGameIconUrl = (game) => {
+  const cases = {
+    pubg: pubgLogoUrl,
+    valorant: valorantLogoUrl
+  }
+
+  return cases[game]
+}
+
 const inviteAutocompleteExecute = async (interaction) => {
   let game = gamesInfo.find(game => game.value === interaction.options.getString("game"))
   const options = interaction.options._hoistedOptions;
