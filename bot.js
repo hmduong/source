@@ -18,10 +18,19 @@ const client = new Client({
     GatewayIntentBits.MessageContent,
   ],
 });
+const { pubgLogoUrl, valorantLogoUrl } = require("./const.js")
 const dotenv = require("dotenv");
 dotenv.config();
 
-const rest = new REST({ version: "10" }).setToken(process.env.DISCORD_TOKEN);
+const env = {
+  DISCORD_TOKEN: process.env.DISCORD_TOKEN,
+  CLIENT_ID: process.env.CLIENT_ID,
+  GUILD_ID: process.env.GUILD_ID,
+  WEBHOOK_TOKEN: process.env.WEBHOOK_TOKEN,
+  WEBHOOK_ID: process.env.WEBHOOK_ID,
+};
+
+const rest = new REST({ version: "10" }).setToken(env.DISCORD_TOKEN);
 
 const commands = [
   new SlashCommandBuilder()
@@ -62,12 +71,12 @@ const gameOptions = {
 (async () => {
   try {
     console.log(
-      `Started refreshing application (/) commands for guild ${process.env.GUILD_ID}.`
+      `Started refreshing application (/) commands for guild ${env.GUILD_ID}.`
     );
     await rest.put(
       Routes.applicationGuildCommands(
-        process.env.CLIENT_ID,
-        process.env.GUILD_ID
+        env.CLIENT_ID,
+        env.GUILD_ID
       ),
       {
         body: commands,
@@ -83,6 +92,15 @@ const gameOptions = {
 client.once(Events.ClientReady, (readyClient) => {
   console.log(`Ready! Logged in as ${readyClient.user.tag}`);
 });
+
+const getGameIconUrl = (game) => {
+  const cases = {
+    pubg: pubgLogoUrl,
+    valorant: valorantLogoUrl
+  }
+
+  return cases[game]
+}
 
 const inviteAutocompleteExecute = async (interaction) => {
   const game = interaction.options.getString("game");
@@ -141,23 +159,27 @@ const inviteCommandExecute = async (interaction) => {
     console.log("z3no3k log: isCommand success");
     const embed = new EmbedBuilder()
       .setColor('#199980')
-      .setTitle('Lobby ')
-      .setDescription('You have initiated a player invitation.')
+      .setTitle(`Lobby ${game} của ${member.user.username}`)
+      .setThumbnail(member.user.displayAvatarURL())
+      .setAuthor({
+        name: game.toUpperCase(),
+        iconURL: getGameIconUrl(game)
+      })
       .addFields(
-        { name: 'Game', value: game, inline: true },
         { name: 'Mode', value: mode, inline: true },
-        { name: 'Rank', value: rank, inline: true }
+        { name: 'Rank', value: rank, inline: true },
+        { name: 'Lobby', value: channel.members.size, inline: true },
       )
       .setTimestamp()
-      .setFooter({ text: 'Use /invite again to adjust your options!' });
+      .setFooter({ text: 'Sử dụng câu lệnh `/invite` để tạo lời mời.' });
     const button = new ButtonBuilder()
-      .setLabel(`Join Voice Channel ${channel.name}`)
+      .setLabel(`Tham gia ${channel.name}`)
       .setStyle(ButtonStyle.Link)
       .setURL(`https://discord.com/channels/${interaction.guild.id}/${channel.id}`);
     const row = new ActionRowBuilder().addComponents(button);
     await interaction.reply({ embeds: [embed], components: [row] });
     await rest.post(
-      Routes.webhook(process.env.WEBHOOK_ID, process.env.WEBHOOK_TOKEN),
+      Routes.webhook(env.WEBHOOK_ID, env.WEBHOOK_TOKEN),
       { body: { embeds: [embed], components: [row] } }
     );
   } else {
@@ -184,4 +206,4 @@ client.on("interactionCreate", async (interaction) => {
       break;
   }
 });
-client.login(process.env.DISCORD_TOKEN);
+client.login(env.DISCORD_TOKEN);
