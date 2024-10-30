@@ -139,7 +139,7 @@ const inviteCommandExecute = async (interaction) => {
   } else if (!memberRoles?.includes(game.name)) {
     result.error = `Bạn chưa đăng kí vai trò người chơi game ${game.name}. Vui lòng làm theo hướng dẫn máy chủ để được cấp vai trò.`
     result.success = false
-  } else if (category !== game.name && !channel) {
+  } else if ((category !== game.name) && !channel) {
     result.error = `Hãy tham gia kênh thoại cho game ${game.name} trước khi tạo lời mời.`
     result.success = false
   }
