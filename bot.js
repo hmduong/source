@@ -200,7 +200,7 @@ client.on("interactionCreate", async (interaction) => {
         break;
     }
   } catch (error) {
-    console.log(`🚀  file: bot.js:186  client.on  error:`, error)
+    console.log(error)
   }
 });
 

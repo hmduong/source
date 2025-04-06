@@ -1,5 +1,6 @@
-const pubgLogoUrl = 'https://scontent.fhan14-3.fna.fbcdn.net/v/t39.30808-1/444920409_763813159289164_2056353831933342571_n.jpg?stp=dst-jpg_s160x160&_nc_cat=1&ccb=1-7&_nc_sid=f4b9fd&_nc_eui2=AeEq7dQRpHVD-eQHvrCAyEbf3BYMGX6Xiq7cFgwZfpeKrljua_K1wO_Dw6QPcKFRdqGOW7n31kTtt4DgnakDknlT&_nc_ohc=gzFpXJdYlbIQ7kNvgEufysZ&_nc_zt=24&_nc_ht=scontent.fhan14-3.fna&_nc_gid=AmgEuYT0uU_C8ZqMtCsLvVR&oh=00_AYDwS_GSMiaiaj_ggthGhgeWNRYbB0c5VCKwGUpS4OhKUw&oe=67276F23'
-const valorantLogoUrl = 'https://scontent.fhan14-3.fna.fbcdn.net/v/t39.30808-6/464337140_986559060152378_8740385744773564702_n.jpg?_nc_cat=1&ccb=1-7&_nc_sid=6ee11a&_nc_eui2=AeFDkjlf5lc2uBixmNtOHfD6TajcdE-LQ5RNqNx0T4tDlOoPLvsTp3YSp5HRNmZxFpI8bcqhdG-Odmuk83URrsWi&_nc_ohc=mIbS4_sNY6cQ7kNvgEza4IE&_nc_zt=23&_nc_ht=scontent.fhan14-3.fna&_nc_gid=Azq0bIL1CnXT2YDFbxPMoFV&oh=00_AYBDdgQBuccJ01cXXQxXeB-6NjwqheYsImWqy7drCFtNUw&oe=6727946B'
+const pubgLogoUrl = 'https://drive.google.com/file/d/1rgMqMCAYI0um0Bq8F2ml1uWawNpr46KU/view?usp=sharing'
+const valorantLogoUrl = 'https://drive.google.com/file/d/1P6sBPNfhSzxzbfhsDPpjwQH2zi0nuPp1/view?usp=sharing'
+const tftLogoUrl = 'https://drive.google.com/file/d/1D6zCOVNOVH6O8eiKiOWc-miBlx3tflHV/view?usp=sharing'
 
 const gamesInfo = [
     {
@@ -43,6 +44,28 @@ const gamesInfo = [
             { name: "Immortal", value: "imm", emojiId: "1301076126940008489" },
             { name: "Radiant", value: "rad", emojiId: "1301076056731684874" },
             { name: "Tất cả", value: "all", emojiId: "1301081968431206482" },
+        ],
+    }, {
+        value: 'tft',
+        name: 'TFT',
+        logoUrl: tftLogoUrl,
+        mode: [
+            { name: "Thường", value: "unrank" },
+            { name: "Hạng", value: "rank" },
+            { name: "Tất cả", value: "all" },
+        ],
+        rank: [
+            { name: "Unrank", value: "unr", emojiId: "1358434518419378326" },
+            { name: "Iron", value: "iro", emojiId: "1358433284010409995" },
+            { name: "Bronze", value: "bro", emojiId: "1358433644925943838" },
+            { name: "Silver", value: "sil", emojiId: "1358433765311119470" },
+            { name: "Gold", value: "gol", emojiId: "1358433958320275530" },
+            { name: "Platinum", value: "pla", emojiId: "1358434070723563634" },
+            { name: "Emerald", value: "eme", emojiId: "1301075974376390656" },
+            { name: "Master", value: "mas", emojiId: "1358434261845147698" },
+            { name: "Grandmaster", value: "gra", emojiId: "1358433141194493983" },
+            { name: "Challenger", value: "cha", emojiId: "1358434347580915834" },
+            { name: "Tất cả", value: "all", emojiId: "1358436591898726531" },
         ],
     },
 ];
