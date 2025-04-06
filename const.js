@@ -1,6 +1,6 @@
-const pubgLogoUrl = 'https://drive.google.com/file/d/1rgMqMCAYI0um0Bq8F2ml1uWawNpr46KU/view?usp=sharing'
-const valorantLogoUrl = 'https://drive.google.com/file/d/1P6sBPNfhSzxzbfhsDPpjwQH2zi0nuPp1/view?usp=sharing'
-const tftLogoUrl = 'https://drive.google.com/file/d/1D6zCOVNOVH6O8eiKiOWc-miBlx3tflHV/view?usp=sharing'
+const pubgLogoUrl = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ8ku7ynjD6DIcRDtkYeBOxnFABgi_AcmWAYA&s'
+const valorantLogoUrl = 'https://i.pinimg.com/736x/39/dc/66/39dc66a4fbaa85dcd12a49f216b60ead.jpg'
+const tftLogoUrl = 'https://static.wikia.nocookie.net/leagueoflegends/images/0/09/Runeterra_Reforged_TFT_set_icon.png/revision/latest?cb=20230708150356&path-prefix=ru'
 
 const gamesInfo = [
     {
